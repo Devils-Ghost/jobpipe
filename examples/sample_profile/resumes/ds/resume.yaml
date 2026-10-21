@@ -1,0 +1,4 @@
+description: >
+  Data scientist and machine learning roles: modeling, experimentation, forecasting
+  (Python, scikit-learn, XGBoost, PyTorch).
+default: true

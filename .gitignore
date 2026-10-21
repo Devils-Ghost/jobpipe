@@ -1,0 +1,23 @@
+# personal data: never commit
+profile/
+CLAUDE.local.md
+.env
+secrets/
+*.service-account.json
+.browser-profile/
+applications/
+
+# generated
+.render-cache/
+tests/fixtures/recommended.json
+examples/sample_profile/resumes/*/template.*
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Word lock files
+~$*.docx
+.claude/settings.local.json

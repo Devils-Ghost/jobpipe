@@ -1,0 +1,84 @@
+# fact_bank.yaml (sample, fictional person)
+# The only source of truth the tailoring step may use. Work experience on the resume is fixed,
+# so the facts that matter most are projects (ids, facts, metrics, tools) and skills.
+# status: verified = usable on a resume; no_resume = true but interview-only; confirm = unverified
+
+contact:
+  name: Jordan Lee
+  email: jordan.lee@example.com
+  phone: 555-010-0199
+  github: https://github.com/jordan-lee
+  location: Chicago, IL
+
+education:
+  - id: edu-ms
+    school: Lakeview University
+    degree: M.S. Data Science
+    date: May 2022
+  - id: edu-bs
+    school: Riverside College
+    degree: B.S. Statistics
+    date: May 2020
+
+experience:                      # informational; the resume's experience section is used verbatim
+  - id: acme
+    company: Acme Retail
+    title: Data Analyst
+    dates: June 2022 - Present
+    facts:
+      - id: acme-reporting
+        status: verified
+        what: Automated weekly SQL extracts and Python notebooks into scheduled Airflow jobs
+        tools: [SQL, Python, Airflow]
+        metrics: ["70% less reporting time"]
+      - id: acme-salary
+        status: no_resume
+        what: Negotiated a raise after the uplift project
+
+projects:
+  - id: proj-churn
+    name: Customer Churn Predictor
+    status: built
+    repo: https://github.com/jordan-lee/churn
+    resume_bullets:
+      - "Raised churn recall by **18%** on **40,000** customers by training gradient-boosted models in **XGBoost** with class weighting."
+      - "Explained churn drivers to stakeholders through **SHAP** values in a **Streamlit** report."
+      - "Prepared customer features with **pandas** in a repeatable **Python** pipeline that feeds the model."
+    context: Personal, 2024
+    facts:
+      - what: Gradient-boosted churn models in XGBoost with class weighting; SHAP explanations in a Streamlit report
+        metrics: ["18% higher recall", "40,000 customers"]
+    tools: [Python, XGBoost, SHAP, Streamlit, pandas]
+  - id: proj-forecast
+    name: Retail Demand Forecasting
+    status: built
+    repo: https://github.com/jordan-lee/forecast
+    resume_bullets:
+      - "Lowered forecast error by **12%** MAPE by comparing **Prophet** and **LightGBM** models on store-level sales."
+      - "Automated backtesting across **52** weeks using **Python** and **pandas**."
+      - "Compared models on store-level sales in a reproducible **Python** notebook."
+    context: Lakeview University, 2021
+    facts:
+      - what: Compared Prophet and LightGBM on store-level sales; automated backtesting across 52 weeks
+        metrics: ["12% lower MAPE", "52 weeks of backtests"]
+    tools: [Python, pandas, Prophet, LightGBM]
+  - id: proj-sentiment
+    name: Review Sentiment Classifier
+    status: built
+    resume_bullets:
+      - "Reached **91%** accuracy on **50,000** product reviews by fine-tuning a small transformer in **PyTorch**."
+      - "Served predictions by wrapping the model in a **FastAPI** service."
+      - "Loaded pretrained weights through **Hugging Face Transformers**."
+    context: Personal, 2023
+    facts:
+      - what: Fine-tuned a small transformer on 50,000 product reviews with PyTorch; served it with FastAPI
+        metrics: ["91% accuracy", "50,000 reviews"]
+    tools: [Python, PyTorch, Hugging Face Transformers, FastAPI]
+
+skills:
+  hands_on:
+    languages: [Python, SQL, R]
+    ml: [scikit-learn, XGBoost, LightGBM, PyTorch, statistical modeling, A/B testing]
+    data: [pandas, Spark, Airflow, dbt, PostgreSQL]
+    viz: [Tableau, Looker, Streamlit, matplotlib]
+    other: [Git, Docker, Excel]

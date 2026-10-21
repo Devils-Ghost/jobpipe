@@ -1,0 +1,28 @@
+# Sample profile (fictional person). Overrides for config/settings.yaml.
+
+candidate:
+  name: Jordan Lee
+  field: data science
+
+filters:
+  require_sponsorship: true
+  max_required_years: 4
+  graduation_date: "2022-05"
+  target_roles: >
+    Data science and analytics roles that work hands-on with data and models: data scientist,
+    data analyst, product analyst, machine learning engineer (applied), analytics engineer.
+    Not relevant: roles whose description is not data work, whatever the title says (sales,
+    recruiting, customer support, pure software engineering without data, research-scientist
+    roles requiring a PhD).
+
+tracker:
+  type: csv
+  csv:
+    path: examples/sample_profile/applied.csv
+    columns: {company: Company, title: Role, status: Status, date: Applied}
+
+links:
+  Streamlit: https://streamlit.io/
+
+projects:
+  local_root: ../sample-projects

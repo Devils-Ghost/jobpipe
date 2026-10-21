@@ -1,0 +1,19 @@
+# One company per line. Case-insensitive, fuzzy-matched. Lines starting with # are ignored.
+BayOne Solutions
+BeaconFire Inc.
+talentpluto
+Infosys
+TCS
+Tata Consultancy Services
+Wipro
+Cognizant
+HCLTech
+HCL Technologies
+Tech Mahindra
+Capgemini
+LTIMindtree
+Mphasis
+Hexaware
+Revature
+SynergisticIT
+FDM Group

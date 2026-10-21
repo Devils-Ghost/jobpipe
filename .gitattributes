@@ -1,0 +1,5 @@
+# Normalize line endings across Windows and macOS
+* text=auto
+*.docx binary
+*.xlsx binary
+*.png binary

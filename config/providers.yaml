@@ -1,0 +1,49 @@
+# LLM providers. `roles` lists, per job, the providers to try in order; the router falls through
+# to the next one on a timeout, rate limit, CLI error, or invalid JSON. Only providers named in
+# `roles` are used (and checked by `jobpipe doctor`). Override any of this in profile/providers.yaml.
+# Adding a new kind of provider = one file in jobpipe/llm/ (see CUSTOMIZE.md).
+
+providers:
+  antigravity_cli:               # Google Antigravity CLI (`agy`), Google AI Pro/Ultra subscription
+    adapter: antigravity_cli
+    command: agy
+    model: null                  # null = CLI default; `agy models` lists slugs
+    timeout_seconds: 300
+  codex_cli:                     # OpenAI Codex CLI, ChatGPT subscription
+    adapter: codex_cli
+    command: codex
+    model: null
+    timeout_seconds: 420
+    enabled_until: null          # optional date (YYYY-MM-DD) after which the router skips it
+  gemini_cli:                    # Gemini CLI with a free AI Studio key (GEMINI_API_KEY in .env)
+    adapter: gemini_cli
+    command: gemini
+    model: gemini-flash-latest   # free tier has no quota for the CLI's default pro model
+    timeout_seconds: 300
+  claude_cli:                    # Claude Code CLI (`claude -p`), Claude subscription; finds the VS Code extension's copy
+    adapter: claude_cli
+    command: claude
+    model: null                  # null = CLI default; or an alias like sonnet / opus
+    timeout_seconds: 300
+  anthropic_api:                 # Anthropic API, pay per use: ANTHROPIC_API_KEY in .env
+    adapter: anthropic_api
+    model: claude-opus-5-5       # claude-sonnet-5-5 / claude-haiku-5-5 cost less
+    effort: medium
+    timeout_seconds: 300
+  openai_api:                    # any OpenAI-compatible endpoint (OpenAI, OpenRouter, Groq, ...)
+    adapter: openai_compatible
+    base_url: https://api.openai.com/v1
+    api_key_env: OPENAI_API_KEY
+    model: null                  # set to a model name from the provider
+    timeout_seconds: 300
+  ollama:                        # local models through Ollama's OpenAI-compatible server
+    adapter: openai_compatible
+    base_url: http://localhost:11434/v1
+    api_key_env: null
+    model: null                  # set to a pulled model name
+    timeout_seconds: 600
+
+roles:
+  extract: [antigravity_cli, codex_cli, gemini_cli]   # reading job cards and job pages
+  tailor: [antigravity_cli, codex_cli, gemini_cli]    # writing skills and project bullets
+  readme: [antigravity_cli, codex_cli, gemini_cli]    # new project READMEs

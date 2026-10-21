@@ -1,0 +1,4 @@
+# projects_pool.yaml
+# Built projects come from fact_bank.yaml. This file tracks proposed projects and their folders.
+# status: proposed | building | built
+projects: []

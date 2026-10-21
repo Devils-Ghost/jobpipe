@@ -1,0 +1,104 @@
+# jobpipe default settings. Personal values belong in profile/settings.yaml, which is
+# deep-merged over this file (list only the keys you change there).
+
+candidate:
+  name: ""                         # used in resume file names (<First>_<Last>_<Company>.pdf) and prompts
+  field: software engineering      # the person's field, used in prompts (e.g. data science)
+
+paths:                             # relative to the repo root
+  applications: applications
+  browser_profile: .browser-profile
+  denylist: config/consultancy_denylist.txt
+
+jobright:
+  base_url: https://jobright.ai
+  recommended_url: https://jobright.ai/jobs/recommend
+  job_link_pattern: /jobs/info/    # job detail links contain this; used to find cards
+  max_scrolls: 80                  # per batch
+  max_cards: 200                   # stop reading the list after this many cards
+  page_delay_seconds: [3, 6]       # random polite pause between page loads
+  page_timeout_seconds: 45
+
+# `jobpipe feed` adds jobs that pass the filters to a career-ops clone's data/pipeline.md as pending
+# URLs (no tailoring). "" = not configured; `jobpipe doctor` checks the path and that pipeline.md is writable.
+career_ops:
+  path: ""                         # folder of your career-ops clone, e.g. C:\Tools\career-ops
+  data_root: ""                    # only if career-ops keeps user data elsewhere (its .career-ops-data marker is read too)
+  source_note: jobright            # written as "| note: <this>" on each line; "" for no tag
+
+pipeline:
+  default_limit: 30
+  job_timeout_seconds: 600         # per-job budget for JD + tailor + render
+
+filters:
+  require_sponsorship: false       # true: skip jobs that cannot sponsor a visa / require citizenship or clearance
+  applied_fuzzy_threshold: 90      # rapidfuzz score for company + title vs tracker rows
+  reapply_after_days: 30           # a tracker row older than this no longer blocks
+  max_required_years: 5            # skip jobs whose minimum required experience is above this
+  # Your graduation month ("YYYY-MM"). Skips jobs whose required graduation window excludes it
+  # (e.g. "graduating Dec 2026 - Aug 2027") and, once it has passed, jobs requiring current
+  # enrollment (internships, co-ops). "" turns the check off.
+  graduation_date: ""
+  # What counts as a relevant job (given to the LLM that reads each job page). Rewrite for your field.
+  target_roles: >
+    Roles in the candidate's field that match their experience level. Not relevant: roles whose
+    description is a different kind of work, whatever the title says.
+  exclude_employer_types: [staffing_agency, it_consultancy]
+  staffing_signals:
+    - our client
+    - on behalf of our client
+    - c2c
+    - corp-to-corp
+    - corp to corp
+    - w2 contract
+    - h1b transfer
+    - h-1b transfer
+    - bench
+    - training and placement
+
+# Where already-submitted applications are listed (read only, never written).
+tracker:
+  type: none                       # none | google_sheet | csv
+  google_sheet:                    # needs JOBPIPE_SHEET_ID and GOOGLE_APPLICATION_CREDENTIALS in .env
+    tabs: [Applications]
+    header_rows: 1
+    columns: {company: A, title: C, status: B, date: G}   # column letters; status/date optional
+    # Optional: a column of companies always skipped (any role, no expiry), with an optional
+    # reason column shown in _skipped.xlsx. Matched as whole words ("Amazon" covers "Amazon Web Services").
+    # blacklist: {tab: Blacklist, column: A, reason_column: B, header_rows: 1}
+  csv:
+    path: profile/applied.csv      # relative to the repo root
+    columns: {company: company, title: title, date: date_applied}   # header names
+
+# Daily lists in applications/<date>/ (_today = tailored jobs, _skipped = skipped jobs).
+lists:
+  formats: [xlsx]                  # xlsx (Excel, clickable links) and/or csv
+
+# Phrases that become hyperlinks wherever they appear in a bullet (exact, case-sensitive).
+links: {}
+
+tailor:
+  max_term_repeats: 3
+  retries: 1
+  # Below this many concrete must-haves, coverage is reported as "not meaningful" instead of a %:
+  # a job that names few specific skills says little through keyword overlap.
+  min_must_haves_for_coverage: 3
+  exclude_projects: []             # built project ids never offered
+  # Length of a bullet the model writes for a new project, in characters (about two resume lines;
+  # check with your own master resume's font and width).
+  bullet_chars: [160, 235]
+
+projects:
+  enabled: true                    # propose new projects for uncovered must-have skills
+  local_root: ..                   # new project folders go here, relative to this repo
+  max_new_per_resume: 3            # every project slot may be a new or pool project when the built ones fit poorly
+  max_unbuilt_projects: 20         # no new project is invented once this many are proposed (reuse still allowed)
+
+render:
+  converter: word                  # word | libreoffice (fallback is automatic)
+  floors:
+    paragraph_spacing_pt: 0
+    line_spacing: 1.0
+    margin_in: 0.5
+    body_font_pt: 10.0
+  font_step_pt: 0.5
